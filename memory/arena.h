@@ -26,3 +26,24 @@ public:
                  size_t huge_page_size = 0, void* reserved = nullptr);
   ~Arena();
 };
+
+class FakeArena : public Allocator {
+public:
+  char* Allocate(size_t) override {
+    assert(false);
+    return nullptr;
+  }
+  /** 
+   * 没耐心了 先搞一个糊弄的 看看能不能跑
+   * */
+  char* AllocateAligned(size_t bytes, size_t, int) override {
+    buf_.resize(bytes);
+    return const_cast<char*>(buf_.data());
+  }
+  size_t BlockSize() const override {
+    assert(false);
+    return 0;
+  }
+private:
+  std::string buf_;
+};

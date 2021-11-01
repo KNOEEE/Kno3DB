@@ -99,6 +99,11 @@ using OnceType = pthread_once_t;
 #define LEVELDB_ONCE_INIT PTHREAD_ONCE_INIT;
 extern void InitOnce(OnceType* once, void (*initializer)());
 
+#define CACHE_LINE_SIZE 64U
+
+// https://www.cnblogs.com/dongzhiquan/p/3694858.html
+#define PREFETCH(addr, rw, locality) __builtin_prefetch(addr, rw, locality)
+
 extern void Crash(const std::string& srcfile, int srcline);
 
 extern int GetMaxOpenFiles();
